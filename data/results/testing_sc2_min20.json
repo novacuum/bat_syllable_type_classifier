@@ -1,0 +1,3634 @@
+{
+  "results": {
+    "nn_lstm_sc2_min20_raw_100/k-fold_2d6c-4de5-c801-34fd-56d5-898d-1f0e-2ab3/rec_k8_v1t2_e100_bva.report": {
+      "id": "nn_lstm_sc2_min20_raw_100/k-fold_2d6c-4de5-c801-34fd-56d5-898d-1f0e-2ab3/rec_k8_v1t2_e100_bva.report",
+      "timestamp": "2020-10-19T16:57:35Z",
+      "val_acc_m": 0.685606069825,
+      "val_acc_d": 0.03314587436944627,
+      "val_loss_m": 1.7827738523625,
+      "val_loss_d": 0.39074188693069245,
+      "test_acc_m": 0.6458333333333334,
+      "test_acc_d": 0.0634802765197052,
+      "test_loss_m": 0.9828097632583329,
+      "test_loss_d": 0.14157065775918007,
+      "epoch_m": 77.75,
+      "epoch_d": 15.754817857223413,
+      "env": {
+        "os": "Linux",
+        "platform": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.10",
+        "sox": "14.4.2",
+        "java": [
+          "openjdk version \"1.8.0_262\"",
+          "OpenJDK Runtime Environment (build 1.8.0_262-b10)",
+          "OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)"
+        ],
+        "keras": "2.4.0",
+        "tf": "2.3.1",
+        "gpu": "device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0"
+      },
+      "pipeline": [
+        {
+          "task": "AudioLoadTask",
+          "props": {
+            "mdb": "simple_call_2/metadata.json",
+            "dataset_name": "simple_call_2",
+            "source": "min20/all.csv"
+          }
+        },
+        {
+          "task": "KFoldSeparationTask",
+          "props": {
+            "k": 8,
+            "val_bins": 1,
+            "test_bins": 2
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_spectrogram",
+            "kwargs": {
+              "sampling_rate": 500000,
+              "x_pixels_per_sec": 2000,
+              "height": 512,
+              "window": "Ham"
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "img_features",
+            "kwargs": {},
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_nn_model",
+            "kwargs": {
+              "name": "lstm_sc2_min20_raw_100",
+              "model": {
+                "name": "sequential",
+                "layers": [
+                  {
+                    "class_name": "InputLayer",
+                    "config": {
+                      "batch_input_shape": [
+                        null,
+                        null,
+                        512
+                      ],
+                      "dtype": "float32",
+                      "sparse": false,
+                      "ragged": true,
+                      "name": "input_1"
+                    }
+                  },
+                  {
+                    "class_name": "LSTM",
+                    "config": {
+                      "name": "lstm",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "return_sequences": true,
+                      "return_state": false,
+                      "go_backwards": false,
+                      "stateful": false,
+                      "unroll": false,
+                      "time_major": false,
+                      "units": 256,
+                      "activation": "tanh",
+                      "recurrent_activation": "sigmoid",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                          "gain": 1.0,
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "unit_forget_bias": true,
+                      "kernel_regularizer": null,
+                      "recurrent_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "recurrent_constraint": null,
+                      "bias_constraint": null,
+                      "dropout": 0.0,
+                      "recurrent_dropout": 0.0,
+                      "implementation": 2
+                    }
+                  },
+                  {
+                    "class_name": "LSTM",
+                    "config": {
+                      "name": "lstm_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "return_sequences": false,
+                      "return_state": false,
+                      "go_backwards": false,
+                      "stateful": false,
+                      "unroll": false,
+                      "time_major": false,
+                      "units": 256,
+                      "activation": "tanh",
+                      "recurrent_activation": "sigmoid",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                          "gain": 1.0,
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "unit_forget_bias": true,
+                      "kernel_regularizer": null,
+                      "recurrent_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "recurrent_constraint": null,
+                      "bias_constraint": null,
+                      "dropout": 0.0,
+                      "recurrent_dropout": 0.0,
+                      "implementation": 2
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "linear",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "linear",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 6,
+                      "activation": "softmax",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  }
+                ]
+              },
+              "prepare_args": {
+                "add_dim": false
+              },
+              "fit_args": null
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {
+              "validate": "val"
+            }
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "train",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "_e100",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "recognize_best_val_acc",
+            "kwargs": {
+              "validate": [
+                {
+                  "task": "AudioLoadTask",
+                  "props": {
+                    "mdb": "simple_call_2/metadata.json",
+                    "dataset_name": "simple_call_2",
+                    "source": "min20/all.csv"
+                  }
+                },
+                {
+                  "task": "KFoldSeparationTask",
+                  "props": {
+                    "k": 8,
+                    "val_bins": 1,
+                    "test_bins": 2,
+                    "n": 0
+                  }
+                },
+                {
+                  "task": "CreateSpectrogramTask",
+                  "props": {
+                    "sampling_rate": 500000,
+                    "x_pixels_per_sec": 2000,
+                    "height": 512,
+                    "window": "Ham"
+                  }
+                },
+                {
+                  "task": "ExtractPixelsTask",
+                  "props": {}
+                }
+              ],
+              "model_path": "simple_call_2/models/nn_lstm_sc2_min20_raw_100/2d6c4591b1e4f6a3b5014bccd81255382b3bfdb6/best_val_acc_e086_v0.6364.h5"
+            },
+            "pfl_suffix": "_bva",
+            "pfl_inject": {
+              "testing": "test"
+            }
+          }
+        },
+        {
+          "task": "KFoldNNMergingTask",
+          "props": {
+            "report_name": [
+              "testing_sc2_min20"
+            ]
+          }
+        }
+      ],
+      "val_acc": [
+        0.6363636255,
+        0.6666666865,
+        0.7272727489,
+        0.7121211886,
+        0.7272727489,
+        0.6666666865,
+        0.6666666865,
+        0.6818181872
+      ],
+      "val_loss": [
+        2.6015708447,
+        1.3369605541,
+        1.8162037134,
+        1.6372725964,
+        1.8364926577,
+        1.4009953737,
+        1.7014704943,
+        1.9312245846
+      ],
+      "test_acc": [
+        0.6818181818181818,
+        0.7121212121212122,
+        0.6742424242424242,
+        0.6590909090909091,
+        0.7196969696969697,
+        0.5606060606060606,
+        0.5757575757575758,
+        0.5833333333333334
+      ],
+      "test_loss": [
+        1.0886066807925847,
+        0.7856330262997252,
+        0.8382297267611575,
+        1.0181216441988425,
+        0.832512771298892,
+        1.088551410577724,
+        1.0593626827189837,
+        1.1514601634187536
+      ],
+      "epoch": [
+        86,
+        83,
+        86,
+        94,
+        83,
+        66,
+        44,
+        80
+      ]
+    },
+    "nn_cnn_2d_sc2_min20_raw_100/k-fold_2d6c-4de5-c801-34fd-56d5-898d-1f0e-2ab3/rec_k8_v1t2_e100_bva.report": {
+      "id": "nn_cnn_2d_sc2_min20_raw_100/k-fold_2d6c-4de5-c801-34fd-56d5-898d-1f0e-2ab3/rec_k8_v1t2_e100_bva.report",
+      "timestamp": "2020-10-19T18:12:18Z",
+      "val_acc_m": 0.8863636479,
+      "val_acc_d": 0.04361351141998707,
+      "val_loss_m": 1.6949551701625,
+      "val_loss_d": 0.5905754761211524,
+      "test_acc_m": 0.8333333333333334,
+      "test_acc_d": 0.03289758474798845,
+      "test_loss_m": 0.8230403465905253,
+      "test_loss_d": 0.26415965081582565,
+      "epoch_m": 53.375,
+      "epoch_d": 25.46110479030431,
+      "env": {
+        "os": "Linux",
+        "platform": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.10",
+        "sox": "14.4.2",
+        "java": [
+          "openjdk version \"1.8.0_262\"",
+          "OpenJDK Runtime Environment (build 1.8.0_262-b10)",
+          "OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)"
+        ],
+        "keras": "2.4.0",
+        "tf": "2.3.1",
+        "gpu": "device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0"
+      },
+      "pipeline": [
+        {
+          "task": "AudioLoadTask",
+          "props": {
+            "mdb": "simple_call_2/metadata.json",
+            "dataset_name": "simple_call_2",
+            "source": "min20/all.csv"
+          }
+        },
+        {
+          "task": "KFoldSeparationTask",
+          "props": {
+            "k": 8,
+            "val_bins": 1,
+            "test_bins": 2
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_spectrogram",
+            "kwargs": {
+              "sampling_rate": 500000,
+              "x_pixels_per_sec": 2000,
+              "height": 512,
+              "window": "Ham"
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "img_features",
+            "kwargs": {},
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_nn_model",
+            "kwargs": {
+              "name": "cnn_2d_sc2_min20_raw_100",
+              "model": {
+                "name": "sequential",
+                "layers": [
+                  {
+                    "class_name": "InputLayer",
+                    "config": {
+                      "batch_input_shape": [
+                        null,
+                        401,
+                        512,
+                        1
+                      ],
+                      "dtype": "float32",
+                      "sparse": false,
+                      "ragged": false,
+                      "name": "conv2d_input"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d",
+                      "trainable": true,
+                      "batch_input_shape": [
+                        null,
+                        401,
+                        512,
+                        1
+                      ],
+                      "dtype": "float32",
+                      "filters": 32,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 128,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 256,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Flatten",
+                    "config": {
+                      "name": "flatten",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 6,
+                      "activation": "softmax",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  }
+                ]
+              },
+              "prepare_args": {},
+              "fit_args": null
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {
+              "validate": "val"
+            }
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "train",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "_e100",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "recognize_best_val_acc",
+            "kwargs": {
+              "validate": [
+                {
+                  "task": "AudioLoadTask",
+                  "props": {
+                    "mdb": "simple_call_2/metadata.json",
+                    "dataset_name": "simple_call_2",
+                    "source": "min20/all.csv"
+                  }
+                },
+                {
+                  "task": "KFoldSeparationTask",
+                  "props": {
+                    "k": 8,
+                    "val_bins": 1,
+                    "test_bins": 2,
+                    "n": 0
+                  }
+                },
+                {
+                  "task": "CreateSpectrogramTask",
+                  "props": {
+                    "sampling_rate": 500000,
+                    "x_pixels_per_sec": 2000,
+                    "height": 512,
+                    "window": "Ham"
+                  }
+                },
+                {
+                  "task": "ExtractPixelsTask",
+                  "props": {}
+                }
+              ],
+              "model_path": "simple_call_2/models/nn_cnn_2d_sc2_min20_raw_100/2d6c4591b1e4f6a3b5014bccd81255382b3bfdb6/best_val_acc_e035_v0.803.h5"
+            },
+            "pfl_suffix": "_bva",
+            "pfl_inject": {
+              "testing": "test"
+            }
+          }
+        },
+        {
+          "task": "KFoldNNMergingTask",
+          "props": {
+            "report_name": [
+              "testing_sc2_min20"
+            ]
+          }
+        }
+      ],
+      "val_acc": [
+        0.8030303121,
+        0.8484848738,
+        0.9242424369,
+        0.9090909362,
+        0.8787878752,
+        0.9242424369,
+        0.8787878752,
+        0.9242424369
+      ],
+      "val_loss": [
+        1.9372483492,
+        1.8236089945,
+        0.8325746059,
+        1.0883307457,
+        2.1357560158,
+        1.1341850758,
+        2.3483583927,
+        2.2595791817
+      ],
+      "test_acc": [
+        0.803030303030303,
+        0.8333333333333334,
+        0.8484848484848485,
+        0.8181818181818182,
+        0.8409090909090909,
+        0.9015151515151515,
+        0.8257575757575758,
+        0.7954545454545454
+      ],
+      "test_loss": [
+        0.6971120331470865,
+        0.7163382042684889,
+        0.6081461143913821,
+        0.6543984716359351,
+        0.8186234352474796,
+        0.619783463102676,
+        1.1806005668996526,
+        1.2893204840315011
+      ],
+      "epoch": [
+        35,
+        30,
+        28,
+        41,
+        57,
+        79,
+        57,
+        100
+      ]
+    },
+    "nn_cnn_1d_sc2_min20_raw_100/k-fold_2d6c-4de5-c801-34fd-56d5-898d-1f0e-2ab3/rec_k8_v1t2_e100_bva.report": {
+      "id": "nn_cnn_1d_sc2_min20_raw_100/k-fold_2d6c-4de5-c801-34fd-56d5-898d-1f0e-2ab3/rec_k8_v1t2_e100_bva.report",
+      "timestamp": "2020-10-19T18:22:42Z",
+      "val_acc_m": 0.84848485145,
+      "val_acc_d": 0.03884060550502161,
+      "val_loss_m": 1.1271762698875,
+      "val_loss_d": 0.3316800572457948,
+      "test_acc_m": 0.7850378787878788,
+      "test_acc_d": 0.03924745910304086,
+      "test_loss_m": 0.7342336657673554,
+      "test_loss_d": 0.3125682770087583,
+      "epoch_m": 52.25,
+      "epoch_d": 24.282562820733258,
+      "env": {
+        "os": "Linux",
+        "platform": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.10",
+        "sox": "14.4.2",
+        "java": [
+          "openjdk version \"1.8.0_262\"",
+          "OpenJDK Runtime Environment (build 1.8.0_262-b10)",
+          "OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)"
+        ],
+        "keras": "2.4.0",
+        "tf": "2.3.1",
+        "gpu": "device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0"
+      },
+      "pipeline": [
+        {
+          "task": "AudioLoadTask",
+          "props": {
+            "mdb": "simple_call_2/metadata.json",
+            "dataset_name": "simple_call_2",
+            "source": "min20/all.csv"
+          }
+        },
+        {
+          "task": "KFoldSeparationTask",
+          "props": {
+            "k": 8,
+            "val_bins": 1,
+            "test_bins": 2
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_spectrogram",
+            "kwargs": {
+              "sampling_rate": 500000,
+              "x_pixels_per_sec": 2000,
+              "height": 512,
+              "window": "Ham"
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "img_features",
+            "kwargs": {},
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_nn_model",
+            "kwargs": {
+              "name": "cnn_1d_sc2_min20_raw_100",
+              "model": {
+                "name": "sequential",
+                "layers": [
+                  {
+                    "class_name": "InputLayer",
+                    "config": {
+                      "batch_input_shape": [
+                        null,
+                        401,
+                        512
+                      ],
+                      "dtype": "float32",
+                      "sparse": false,
+                      "ragged": false,
+                      "name": "conv1d_input"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d",
+                      "trainable": true,
+                      "batch_input_shape": [
+                        null,
+                        401,
+                        512
+                      ],
+                      "dtype": "float32",
+                      "filters": 32,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 128,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 256,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_5",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 256,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_5",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Flatten",
+                    "config": {
+                      "name": "flatten",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 6,
+                      "activation": "softmax",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  }
+                ]
+              },
+              "prepare_args": {
+                "add_dim": false
+              },
+              "fit_args": null
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {
+              "validate": "val"
+            }
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "train",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "_e100",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "run",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "recognize_best_val_acc",
+            "kwargs": {
+              "validate": [
+                {
+                  "task": "AudioLoadTask",
+                  "props": {
+                    "mdb": "simple_call_2/metadata.json",
+                    "dataset_name": "simple_call_2",
+                    "source": "min20/all.csv"
+                  }
+                },
+                {
+                  "task": "KFoldSeparationTask",
+                  "props": {
+                    "k": 8,
+                    "val_bins": 1,
+                    "test_bins": 2,
+                    "n": 0
+                  }
+                },
+                {
+                  "task": "CreateSpectrogramTask",
+                  "props": {
+                    "sampling_rate": 500000,
+                    "x_pixels_per_sec": 2000,
+                    "height": 512,
+                    "window": "Ham"
+                  }
+                },
+                {
+                  "task": "ExtractPixelsTask",
+                  "props": {}
+                }
+              ],
+              "model_path": "simple_call_2/models/nn_cnn_1d_sc2_min20_raw_100/2d6c4591b1e4f6a3b5014bccd81255382b3bfdb6/best_val_acc_e039_v0.803.h5"
+            },
+            "pfl_suffix": "_bva",
+            "pfl_inject": {
+              "testing": "test"
+            }
+          }
+        },
+        {
+          "task": "KFoldNNMergingTask",
+          "props": {
+            "report_name": [
+              "testing_sc2_min20"
+            ]
+          }
+        }
+      ],
+      "val_acc": [
+        0.8030303121,
+        0.8030303121,
+        0.8939393759,
+        0.8333333135,
+        0.8484848738,
+        0.8636363745,
+        0.8333333135,
+        0.9090909362
+      ],
+      "val_loss": [
+        1.1451848745,
+        1.3529503345,
+        1.2666116953,
+        0.6354573965,
+        1.2983694077,
+        0.6569981575,
+        1.0817637444,
+        1.5800745487
+      ],
+      "test_acc": [
+        0.7727272727272727,
+        0.8333333333333334,
+        0.75,
+        0.8106060606060606,
+        0.8409090909090909,
+        0.7803030303030303,
+        0.7348484848484849,
+        0.7575757575757576
+      ],
+      "test_loss": [
+        0.576038663678868,
+        0.4391995975496971,
+        0.9671849391340684,
+        0.4637275232149345,
+        0.7905029836291487,
+        0.5375651459964291,
+        0.7309670832609423,
+        1.3686833896747546
+      ],
+      "epoch": [
+        39,
+        41,
+        65,
+        41,
+        91,
+        27,
+        31,
+        83
+      ]
+    },
+    "nn_lstm_sc2_min20_hog_100/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report": {
+      "id": "nn_lstm_sc2_min20_hog_100/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report",
+      "timestamp": "2020-10-19T18:50:04Z",
+      "val_acc_m": 0.69128787515,
+      "val_acc_d": 0.04356648739118753,
+      "val_loss_m": 1.666231498125,
+      "val_loss_d": 0.3514788007900472,
+      "test_acc_m": 0.6458333333333334,
+      "test_acc_d": 0.0325845654054645,
+      "test_loss_m": 0.9813788634065799,
+      "test_loss_d": 0.10703434818818112,
+      "epoch_m": 73,
+      "epoch_d": 21.580414400893364,
+      "env": {
+        "os": "Linux",
+        "platform": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.10",
+        "sox": "14.4.2",
+        "java": [
+          "openjdk version \"1.8.0_262\"",
+          "OpenJDK Runtime Environment (build 1.8.0_262-b10)",
+          "OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)"
+        ],
+        "keras": "2.4.0",
+        "tf": "2.3.1",
+        "gpu": "device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0"
+      },
+      "pipeline": [
+        {
+          "task": "AudioLoadTask",
+          "props": {
+            "mdb": "simple_call_2/metadata.json",
+            "dataset_name": "simple_call_2",
+            "source": "min20/all.csv"
+          }
+        },
+        {
+          "task": "KFoldSeparationTask",
+          "props": {
+            "k": 8,
+            "val_bins": 1,
+            "test_bins": 2
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_spectrogram",
+            "kwargs": {
+              "sampling_rate": 500000,
+              "x_pixels_per_sec": 2000,
+              "height": 512,
+              "window": "Ham"
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "hog_hwr_features",
+            "kwargs": {},
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_nn_model",
+            "kwargs": {
+              "name": "lstm_sc2_min20_hog_100",
+              "model": {
+                "name": "sequential",
+                "layers": [
+                  {
+                    "class_name": "InputLayer",
+                    "config": {
+                      "batch_input_shape": [
+                        null,
+                        null,
+                        288
+                      ],
+                      "dtype": "float32",
+                      "sparse": false,
+                      "ragged": true,
+                      "name": "input_1"
+                    }
+                  },
+                  {
+                    "class_name": "LSTM",
+                    "config": {
+                      "name": "lstm",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "return_sequences": true,
+                      "return_state": false,
+                      "go_backwards": false,
+                      "stateful": false,
+                      "unroll": false,
+                      "time_major": false,
+                      "units": 256,
+                      "activation": "tanh",
+                      "recurrent_activation": "sigmoid",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                          "gain": 1.0,
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "unit_forget_bias": true,
+                      "kernel_regularizer": null,
+                      "recurrent_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "recurrent_constraint": null,
+                      "bias_constraint": null,
+                      "dropout": 0.0,
+                      "recurrent_dropout": 0.0,
+                      "implementation": 2
+                    }
+                  },
+                  {
+                    "class_name": "LSTM",
+                    "config": {
+                      "name": "lstm_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "return_sequences": false,
+                      "return_state": false,
+                      "go_backwards": false,
+                      "stateful": false,
+                      "unroll": false,
+                      "time_major": false,
+                      "units": 256,
+                      "activation": "tanh",
+                      "recurrent_activation": "sigmoid",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                          "gain": 1.0,
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "unit_forget_bias": true,
+                      "kernel_regularizer": null,
+                      "recurrent_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "recurrent_constraint": null,
+                      "bias_constraint": null,
+                      "dropout": 0.0,
+                      "recurrent_dropout": 0.0,
+                      "implementation": 2
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "linear",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "linear",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 6,
+                      "activation": "softmax",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  }
+                ]
+              },
+              "prepare_args": {
+                "add_dim": false
+              },
+              "fit_args": null
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {
+              "validate": "val"
+            }
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "train",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "_e100",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "recognize_best_val_acc",
+            "kwargs": {
+              "validate": [
+                {
+                  "task": "AudioLoadTask",
+                  "props": {
+                    "mdb": "simple_call_2/metadata.json",
+                    "dataset_name": "simple_call_2",
+                    "source": "min20/all.csv"
+                  }
+                },
+                {
+                  "task": "KFoldSeparationTask",
+                  "props": {
+                    "k": 8,
+                    "val_bins": 1,
+                    "test_bins": 2,
+                    "n": 0
+                  }
+                },
+                {
+                  "task": "CreateSpectrogramTask",
+                  "props": {
+                    "sampling_rate": 500000,
+                    "x_pixels_per_sec": 2000,
+                    "height": 512,
+                    "window": "Ham"
+                  }
+                },
+                {
+                  "task": "ExtractHOGHWRecogTask",
+                  "props": {}
+                }
+              ],
+              "model_path": "simple_call_2/models/nn_lstm_sc2_min20_hog_100/fd3341350f4da819e5fba1c12e50f49af1bd0a05/best_val_acc_e056_v0.6667.h5"
+            },
+            "pfl_suffix": "_bva",
+            "pfl_inject": {
+              "testing": "test"
+            }
+          }
+        },
+        {
+          "task": "KFoldNNMergingTask",
+          "props": {
+            "report_name": [
+              "testing_sc2_min20"
+            ]
+          }
+        }
+      ],
+      "val_acc": [
+        0.6666666865,
+        0.6363636255,
+        0.6515151262,
+        0.7272727489,
+        0.6969696879,
+        0.6969696879,
+        0.6818181872,
+        0.7727272511
+      ],
+      "val_loss": [
+        2.0625360012,
+        1.3456226587,
+        1.6376988888,
+        1.5833375454,
+        1.080727458,
+        1.5962566137,
+        2.0847461224,
+        1.9389266968
+      ],
+      "test_acc": [
+        0.6439393939393939,
+        0.6439393939393939,
+        0.6439393939393939,
+        0.7196969696969697,
+        0.6439393939393939,
+        0.6363636363636364,
+        0.6060606060606061,
+        0.6287878787878788
+      ],
+      "test_loss": [
+        0.9972160891188788,
+        0.9166748698407405,
+        0.9084341299355098,
+        0.8507056187449423,
+        0.8972519737323954,
+        1.0364820785167659,
+        1.1646972195629863,
+        1.0795689278004201
+      ],
+      "epoch": [
+        56,
+        90,
+        70,
+        69,
+        36,
+        67,
+        99,
+        97
+      ]
+    },
+    "nn_cnn_2d_sc2_min20_hog_100/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report": {
+      "id": "nn_cnn_2d_sc2_min20_hog_100/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report",
+      "timestamp": "2020-10-19T19:11:13Z",
+      "val_acc_m": 0.79356060925,
+      "val_acc_d": 0.04504688101738242,
+      "val_loss_m": 2.1331254542,
+      "val_loss_d": 0.9321458194235975,
+      "test_acc_m": 0.7263257575757576,
+      "test_acc_d": 0.025105542661606136,
+      "test_loss_m": 1.0027789422757514,
+      "test_loss_d": 0.2676757547593189,
+      "epoch_m": 69.75,
+      "epoch_d": 22.7705950734714,
+      "env": {
+        "os": "Linux",
+        "platform": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.10",
+        "sox": "14.4.2",
+        "java": [
+          "openjdk version \"1.8.0_262\"",
+          "OpenJDK Runtime Environment (build 1.8.0_262-b10)",
+          "OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)"
+        ],
+        "keras": "2.4.0",
+        "tf": "2.3.1",
+        "gpu": "device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0"
+      },
+      "pipeline": [
+        {
+          "task": "AudioLoadTask",
+          "props": {
+            "mdb": "simple_call_2/metadata.json",
+            "dataset_name": "simple_call_2",
+            "source": "min20/all.csv"
+          }
+        },
+        {
+          "task": "KFoldSeparationTask",
+          "props": {
+            "k": 8,
+            "val_bins": 1,
+            "test_bins": 2
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_spectrogram",
+            "kwargs": {
+              "sampling_rate": 500000,
+              "x_pixels_per_sec": 2000,
+              "height": 512,
+              "window": "Ham"
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "hog_hwr_features",
+            "kwargs": {},
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_nn_model",
+            "kwargs": {
+              "name": "cnn_2d_sc2_min20_hog_100",
+              "model": {
+                "name": "sequential",
+                "layers": [
+                  {
+                    "class_name": "InputLayer",
+                    "config": {
+                      "batch_input_shape": [
+                        null,
+                        194,
+                        288,
+                        1
+                      ],
+                      "dtype": "float32",
+                      "sparse": false,
+                      "ragged": false,
+                      "name": "conv2d_input"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d",
+                      "trainable": true,
+                      "batch_input_shape": [
+                        null,
+                        194,
+                        288,
+                        1
+                      ],
+                      "dtype": "float32",
+                      "filters": 32,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 128,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 256,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Flatten",
+                    "config": {
+                      "name": "flatten",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 6,
+                      "activation": "softmax",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  }
+                ]
+              },
+              "prepare_args": {},
+              "fit_args": null
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {
+              "validate": "val"
+            }
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "train",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "_e100",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "recognize_best_val_acc",
+            "kwargs": {
+              "validate": [
+                {
+                  "task": "AudioLoadTask",
+                  "props": {
+                    "mdb": "simple_call_2/metadata.json",
+                    "dataset_name": "simple_call_2",
+                    "source": "min20/all.csv"
+                  }
+                },
+                {
+                  "task": "KFoldSeparationTask",
+                  "props": {
+                    "k": 8,
+                    "val_bins": 1,
+                    "test_bins": 2,
+                    "n": 0
+                  }
+                },
+                {
+                  "task": "CreateSpectrogramTask",
+                  "props": {
+                    "sampling_rate": 500000,
+                    "x_pixels_per_sec": 2000,
+                    "height": 512,
+                    "window": "Ham"
+                  }
+                },
+                {
+                  "task": "ExtractHOGHWRecogTask",
+                  "props": {}
+                }
+              ],
+              "model_path": "simple_call_2/models/nn_cnn_2d_sc2_min20_hog_100/fd3341350f4da819e5fba1c12e50f49af1bd0a05/best_val_acc_e093_v0.7576.h5"
+            },
+            "pfl_suffix": "_bva",
+            "pfl_inject": {
+              "testing": "test"
+            }
+          }
+        },
+        {
+          "task": "KFoldNNMergingTask",
+          "props": {
+            "report_name": [
+              "testing_sc2_min20"
+            ]
+          }
+        }
+      ],
+      "val_acc": [
+        0.7575757504,
+        0.7424242496,
+        0.8333333135,
+        0.7575757504,
+        0.8030303121,
+        0.8484848738,
+        0.7575757504,
+        0.8484848738
+      ],
+      "val_loss": [
+        3.4145894051,
+        2.7993524075,
+        1.5469554663,
+        1.1196796894,
+        1.398930192,
+        1.1376895905,
+        2.5580921173,
+        3.0897147655
+      ],
+      "test_acc": [
+        0.7348484848484849,
+        0.7727272727272727,
+        0.7348484848484849,
+        0.696969696969697,
+        0.7196969696969697,
+        0.7045454545454546,
+        0.7424242424242424,
+        0.7045454545454546
+      ],
+      "test_loss": [
+        1.1134806868419054,
+        0.8516619825435039,
+        1.1571184170395297,
+        0.6304310081187747,
+        0.7214894737819233,
+        0.906837879462153,
+        1.2380206011090913,
+        1.40319148930913
+      ],
+      "epoch": [
+        93,
+        86,
+        94,
+        43,
+        51,
+        41,
+        63,
+        87
+      ]
+    },
+    "nn_cnn_1d_sc2_min20_hog_100/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report": {
+      "id": "nn_cnn_1d_sc2_min20_hog_100/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report",
+      "timestamp": "2020-10-19T19:17:49Z",
+      "val_acc_m": 0.8181818202375,
+      "val_acc_d": 0.045813876895988315,
+      "val_loss_m": 1.41110654175,
+      "val_loss_d": 0.6553732235559416,
+      "test_acc_m": 0.7604166666666666,
+      "test_acc_d": 0.03186903275265495,
+      "test_loss_m": 0.7426673132545706,
+      "test_loss_d": 0.14394876351592784,
+      "epoch_m": 71.375,
+      "epoch_d": 15.41740667464631,
+      "env": {
+        "os": "Linux",
+        "platform": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.10",
+        "sox": "14.4.2",
+        "java": [
+          "openjdk version \"1.8.0_262\"",
+          "OpenJDK Runtime Environment (build 1.8.0_262-b10)",
+          "OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)"
+        ],
+        "keras": "2.4.0",
+        "tf": "2.3.1",
+        "gpu": "device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0"
+      },
+      "pipeline": [
+        {
+          "task": "AudioLoadTask",
+          "props": {
+            "mdb": "simple_call_2/metadata.json",
+            "dataset_name": "simple_call_2",
+            "source": "min20/all.csv"
+          }
+        },
+        {
+          "task": "KFoldSeparationTask",
+          "props": {
+            "k": 8,
+            "val_bins": 1,
+            "test_bins": 2
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_spectrogram",
+            "kwargs": {
+              "sampling_rate": 500000,
+              "x_pixels_per_sec": 2000,
+              "height": 512,
+              "window": "Ham"
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "hog_hwr_features",
+            "kwargs": {},
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_nn_model",
+            "kwargs": {
+              "name": "cnn_1d_sc2_min20_hog_100",
+              "model": {
+                "name": "sequential",
+                "layers": [
+                  {
+                    "class_name": "InputLayer",
+                    "config": {
+                      "batch_input_shape": [
+                        null,
+                        194,
+                        288
+                      ],
+                      "dtype": "float32",
+                      "sparse": false,
+                      "ragged": false,
+                      "name": "conv1d_input"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d",
+                      "trainable": true,
+                      "batch_input_shape": [
+                        null,
+                        194,
+                        288
+                      ],
+                      "dtype": "float32",
+                      "filters": 32,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_2",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 128,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_3",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv1D",
+                    "config": {
+                      "name": "conv1d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 256,
+                      "kernel_size": [
+                        3
+                      ],
+                      "strides": [
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling1D",
+                    "config": {
+                      "name": "max_pooling1d_4",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "strides": [
+                        2
+                      ],
+                      "pool_size": [
+                        2
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Flatten",
+                    "config": {
+                      "name": "flatten",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 6,
+                      "activation": "softmax",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  }
+                ]
+              },
+              "prepare_args": {
+                "add_dim": false
+              },
+              "fit_args": null
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {
+              "validate": "val"
+            }
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "train",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "_e100",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "run",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "recognize_best_val_acc",
+            "kwargs": {
+              "validate": [
+                {
+                  "task": "AudioLoadTask",
+                  "props": {
+                    "mdb": "simple_call_2/metadata.json",
+                    "dataset_name": "simple_call_2",
+                    "source": "min20/all.csv"
+                  }
+                },
+                {
+                  "task": "KFoldSeparationTask",
+                  "props": {
+                    "k": 8,
+                    "val_bins": 1,
+                    "test_bins": 2,
+                    "n": 0
+                  }
+                },
+                {
+                  "task": "CreateSpectrogramTask",
+                  "props": {
+                    "sampling_rate": 500000,
+                    "x_pixels_per_sec": 2000,
+                    "height": 512,
+                    "window": "Ham"
+                  }
+                },
+                {
+                  "task": "ExtractHOGHWRecogTask",
+                  "props": {}
+                }
+              ],
+              "model_path": "simple_call_2/models/nn_cnn_1d_sc2_min20_hog_100/fd3341350f4da819e5fba1c12e50f49af1bd0a05/best_val_acc_e076_v0.7424.h5"
+            },
+            "pfl_suffix": "_bva",
+            "pfl_inject": {
+              "testing": "test"
+            }
+          }
+        },
+        {
+          "task": "KFoldNNMergingTask",
+          "props": {
+            "report_name": [
+              "testing_sc2_min20"
+            ]
+          }
+        }
+      ],
+      "val_acc": [
+        0.7424242496,
+        0.8333333135,
+        0.7878788114,
+        0.8787878752,
+        0.8333333135,
+        0.8484848738,
+        0.7727272511,
+        0.8484848738
+      ],
+      "val_loss": [
+        2.7049212456,
+        1.200371623,
+        1.7280664444,
+        0.6731817126,
+        1.1774431467,
+        0.7982456088,
+        1.1902333498,
+        1.8163892031
+      ],
+      "test_acc": [
+        0.7575757575757576,
+        0.75,
+        0.7651515151515151,
+        0.7803030303030303,
+        0.8181818181818182,
+        0.7575757575757576,
+        0.7045454545454546,
+        0.75
+      ],
+      "test_loss": [
+        0.7671305889909052,
+        0.6496029675988885,
+        0.7045879459502731,
+        0.8244150451974344,
+        0.5101102905547966,
+        0.6513138461030016,
+        0.870277804886298,
+        0.9639000167549671
+      ],
+      "epoch": [
+        76,
+        61,
+        90,
+        89,
+        68,
+        48,
+        57,
+        82
+      ]
+    },
+    "nn_cnn_2d_sc2_min20_hog_100_3d/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report": {
+      "id": "nn_cnn_2d_sc2_min20_hog_100_3d/k-fold_fd33-a91e-05c0-775c-2520-c9d9-ac3c-75f4/rec_k8_v1t2_e100_bva.report",
+      "timestamp": "2020-10-19T19:33:04Z",
+      "val_acc_m": 0.8655303046375,
+      "val_acc_d": 0.02968801282093008,
+      "val_loss_m": 1.42518973725,
+      "val_loss_d": 0.6786694467686644,
+      "test_acc_m": 0.7935606060606061,
+      "test_acc_d": 0.035243851705484386,
+      "test_loss_m": 0.7832824368256488,
+      "test_loss_d": 0.20935255509083137,
+      "epoch_m": 52.375,
+      "epoch_d": 22.411333229927603,
+      "env": {
+        "os": "Linux",
+        "platform": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.10",
+        "sox": "14.4.2",
+        "java": [
+          "openjdk version \"1.8.0_262\"",
+          "OpenJDK Runtime Environment (build 1.8.0_262-b10)",
+          "OpenJDK 64-Bit Server VM (build 25.262-b10, mixed mode)"
+        ],
+        "keras": "2.4.0",
+        "tf": "2.3.1",
+        "gpu": "device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0"
+      },
+      "pipeline": [
+        {
+          "task": "AudioLoadTask",
+          "props": {
+            "mdb": "simple_call_2/metadata.json",
+            "dataset_name": "simple_call_2",
+            "source": "min20/all.csv"
+          }
+        },
+        {
+          "task": "KFoldSeparationTask",
+          "props": {
+            "k": 8,
+            "val_bins": 1,
+            "test_bins": 2
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_spectrogram",
+            "kwargs": {
+              "sampling_rate": 500000,
+              "x_pixels_per_sec": 2000,
+              "height": 512,
+              "window": "Ham"
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "hog_hwr_features",
+            "kwargs": {},
+            "pfl_suffix": "",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "create_nn_model",
+            "kwargs": {
+              "name": "cnn_2d_sc2_min20_hog_100_3d",
+              "model": {
+                "name": "sequential",
+                "layers": [
+                  {
+                    "class_name": "InputLayer",
+                    "config": {
+                      "batch_input_shape": [
+                        null,
+                        194,
+                        24,
+                        12
+                      ],
+                      "dtype": "float32",
+                      "sparse": false,
+                      "ragged": false,
+                      "name": "conv2d_input"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d",
+                      "trainable": true,
+                      "batch_input_shape": [
+                        null,
+                        194,
+                        24,
+                        12
+                      ],
+                      "dtype": "float32",
+                      "filters": 32,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Conv2D",
+                    "config": {
+                      "name": "conv2d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "filters": 64,
+                      "kernel_size": [
+                        3,
+                        3
+                      ],
+                      "strides": [
+                        1,
+                        1
+                      ],
+                      "padding": "valid",
+                      "data_format": "channels_last",
+                      "dilation_rate": [
+                        1,
+                        1
+                      ],
+                      "groups": 1,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "MaxPooling2D",
+                    "config": {
+                      "name": "max_pooling2d_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "pool_size": [
+                        2,
+                        2
+                      ],
+                      "padding": "valid",
+                      "strides": [
+                        2,
+                        2
+                      ],
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Flatten",
+                    "config": {
+                      "name": "flatten",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "data_format": "channels_last"
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 1024,
+                      "activation": "relu",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  },
+                  {
+                    "class_name": "Dropout",
+                    "config": {
+                      "name": "dropout",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "rate": 0.5,
+                      "noise_shape": null,
+                      "seed": null
+                    }
+                  },
+                  {
+                    "class_name": "Dense",
+                    "config": {
+                      "name": "dense_1",
+                      "trainable": true,
+                      "dtype": "float32",
+                      "units": 6,
+                      "activation": "softmax",
+                      "use_bias": true,
+                      "kernel_initializer": {
+                        "class_name": "GlorotUniform",
+                        "config": {
+                          "seed": null
+                        }
+                      },
+                      "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                      },
+                      "kernel_regularizer": null,
+                      "bias_regularizer": null,
+                      "activity_regularizer": null,
+                      "kernel_constraint": null,
+                      "bias_constraint": null
+                    }
+                  }
+                ]
+              },
+              "prepare_args": {
+                "new_dim_size": 12
+              },
+              "fit_args": null
+            },
+            "pfl_suffix": "",
+            "pfl_inject": {
+              "validate": "val"
+            }
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "train",
+            "kwargs": {
+              "epochs": 100,
+              "save_every": 100
+            },
+            "pfl_suffix": "_e100",
+            "pfl_inject": {}
+          }
+        },
+        {
+          "task": "ParallelTask",
+          "props": {
+            "action": "recognize_best_val_acc",
+            "kwargs": {
+              "validate": [
+                {
+                  "task": "AudioLoadTask",
+                  "props": {
+                    "mdb": "simple_call_2/metadata.json",
+                    "dataset_name": "simple_call_2",
+                    "source": "min20/all.csv"
+                  }
+                },
+                {
+                  "task": "KFoldSeparationTask",
+                  "props": {
+                    "k": 8,
+                    "val_bins": 1,
+                    "test_bins": 2,
+                    "n": 0
+                  }
+                },
+                {
+                  "task": "CreateSpectrogramTask",
+                  "props": {
+                    "sampling_rate": 500000,
+                    "x_pixels_per_sec": 2000,
+                    "height": 512,
+                    "window": "Ham"
+                  }
+                },
+                {
+                  "task": "ExtractHOGHWRecogTask",
+                  "props": {}
+                }
+              ],
+              "model_path": "simple_call_2/models/nn_cnn_2d_sc2_min20_hog_100_3d/fd3341350f4da819e5fba1c12e50f49af1bd0a05/best_val_acc_e045_v0.803.h5"
+            },
+            "pfl_suffix": "_bva",
+            "pfl_inject": {
+              "testing": "test"
+            }
+          }
+        },
+        {
+          "task": "KFoldNNMergingTask",
+          "props": {
+            "report_name": [
+              "testing_sc2_min20"
+            ]
+          }
+        }
+      ],
+      "val_acc": [
+        0.8030303121,
+        0.8484848738,
+        0.8787878752,
+        0.8939393759,
+        0.8636363745,
+        0.8787878752,
+        0.8636363745,
+        0.8939393759
+      ],
+      "val_loss": [
+        2.7937812805,
+        1.3075064421,
+        0.9338344932,
+        0.4880971611,
+        1.2474416494,
+        1.56029737,
+        1.2673312426,
+        1.8032282591
+      ],
+      "test_acc": [
+        0.7727272727272727,
+        0.8106060606060606,
+        0.8484848484848485,
+        0.8257575757575758,
+        0.8106060606060606,
+        0.75,
+        0.7727272727272727,
+        0.7575757575757576
+      ],
+      "test_loss": [
+        0.8176309333779205,
+        0.609909149380882,
+        0.7299264600604204,
+        0.7340069193470793,
+        0.4345048983395529,
+        1.0062882566500588,
+        0.8416821192080796,
+        1.092310758241197
+      ],
+      "epoch": [
+        45,
+        60,
+        80,
+        41,
+        21,
+        81,
+        28,
+        63
+      ]
+    }
+  }
+}

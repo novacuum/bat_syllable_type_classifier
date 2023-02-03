@@ -1,0 +1,42 @@
+# ConTeXt temp files
+*.tuc
+*.synctex
+*.log
+*.pgf
+*.vimout
+*.tmp
+tmp
+# Images automatically converted
+m_k_i_v_*
+
+# Untriaged Papers
+/doc/untriaged
+
+# IDE
+.vscode
+.idea
+
+# Drafts
+draft*.py
+
+# Python Virtualenvs
+venv*
+
+# Python cache
+*.pyc
+__pycache__
+*-checkpoint.ipynb
+*-checkpoint.py
+.ipynb_checkpoints
+
+# Django DB
+db.sqlite3
+
+/data/*
+!/data/results/
+/data/results/report
+/data/results/*.lock
+
+/document/report/
+
+/experiments/*.html

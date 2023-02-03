@@ -1,0 +1,96 @@
+--- ./HResults.c	2009-03-12 19:53:43.000000000 +0100
++++ ./HResults.new.c	2018-12-09 23:52:51.470167000 +0100
+@@ -19,8 +19,8 @@
+ /*    File: HResults.c: gather statistics on results           */
+ /* ----------------------------------------------------------- */
+ 
+-char *hresults_version = "!HVER!HResults:   3.4.1 [CUED 12/03/09]";
+-char *hresults_vc_id = "$Id: HResults.c,v 1.1.1.1 2006/10/11 09:55:01 jal58 Exp $";
++char *hresults_version = "!HVER!HResults:   3.4.2 [GW 2018/12/09]";
++char *hresults_vc_id = "$Id: HResults.c,v 1.1.1.2 2018/12/09 Gilles Waeber";
+ 
+ #include "HShell.h"
+ #include "HMem.h"
+@@ -1173,8 +1173,6 @@
+ {
+    int i;
+ 
+-   if (nLabs>MAXCONMATSIZE)
+-      HError(3332,"InitConMat: Confusion matrix would be too large");
+    conMat = (ShortVec *) New(&permHeap, nLabs*sizeof(ShortVec));
+    --conMat;                    /* index is 1..nLabs */
+    for (i=1;i<=nLabs;i++){
+@@ -1197,7 +1195,7 @@
+ 
+    seen=(Boolean*)New(&tempHeap,sizeof(Boolean)*nLabs);
+    seen--;
+-   maxlen = 0;
++   maxlen = floor(log10(abs(nLabs) + 1)) + 1; /* digits */
+    for (i=1;i<=nLabs;i++) {
+       k = strlen(names[i]->name);
+       if (k > maxlen) maxlen = k;
+@@ -1209,35 +1207,33 @@
+       if (k==0) seen[j]=FALSE;
+       else seen[j]=TRUE;
+    }
+-   for (j=0;j<maxlen;j++) {
+-      for (k=0; k<=4 ; k++) printf(" ");
+-      for (i=1;i<=nLabs;i++) {
+-         if (!seen[i]) continue;
+-         s = names[i]->name;
+-         c = (j<strlen(s))?s[j]:' ';
+-         printf("  %c ",c);
+-      }
+-      if (j==maxlen-1)
+-         printf(" Del [ %%c / %%e]");
+-      printf("\n");
++
++   char labelFormat[maxlen + 3];
++   char numFormat[maxlen + 3];
++   sprintf(labelFormat, "%%%ds", maxlen + 1);
++   sprintf(numFormat, "%%%dd", maxlen + 1);
++
++   printf(labelFormat, "");
++   for (i=1;i<=nLabs;i++) {
++      if (!seen[i]) continue;
++      printf(labelFormat, names[i]->name);
+    }
++   printf(labelFormat, "Del");
++   printf(" [ %%c / %%e]\n");
+    for (i=1;i<=nLabs;i++){
+       for (j=1,k=conDel[i];j<=nLabs;j++) k+=conMat[i][j];
+       if (k==0) continue;
+ 
+-      strcpy(buf,names[i]->name); buf[4] = '\0';
+-      printf("%4s ",buf);
++      printf(labelFormat, names[i]->name);
+       rowerr = 0;
+       for (j=1; j<=nLabs; j++){
+          if (!seen[j]) continue;
+          err = conMat[i][j];
+          if (i!=j) rowerr += err;
+-         if (err<100)
+-            printf(" %2d ",err);
+-         else
+-            printf("%4d",err);
++
++         printf(numFormat, err);
+       }
+-      printf("%4d",conDel[i]);
++      printf(numFormat, conDel[i]);
+       if (rowerr>0) {
+          correct = 100.0*(float)conMat[i][i]/(float)(conMat[i][i]+rowerr);
+          errprop = 100.0*(float)rowerr/(float)nsyms;
+@@ -1245,10 +1241,10 @@
+       } else
+          printf("\n");
+    }
+-   printf("Ins ");
++   printf(labelFormat, "Ins");
+    for (j=1; j<=nLabs; j++) {
+       if (!seen[j]) continue;
+-      printf("%4d",conIns[j]);
++      printf(numFormat, conIns[j]);
+    }
+    printf("\n");
+    seen++;
